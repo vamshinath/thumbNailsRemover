@@ -1,7 +1,7 @@
 #!/usr/python3
 import os,sys,time
 from PIL import Image
-
+import threading
 def scanImages():
 
     imgsGifs=[]
@@ -13,12 +13,11 @@ def scanImages():
                 imgsGifs.append(fl)
     return imgsGifs
 
-def removeImages(imgs):
+def removeImage(img):
 
-    for img in imgs:
-        tmp = Image.open(img).size
-        print(tmp)
-        time.sleep(10)
+    tmp = Image.open(img).size
+    if int(tmp[0]) < 512 and int(tmp[1]) < 512:
+        os.remove(img)
 
 
 
@@ -29,7 +28,11 @@ def main():
 
     imgs=scanImages()
 
-    removeImages(imgs)
+    for img in imgs:
+        print(img)
+        threading.Thread(target=removeImage,args=(img,)).start()
+        while threading.active_count() > 10:
+            time.sleep(1.5)
 
 
 if __name__ == "__main__":
