@@ -10,6 +10,7 @@ def scanImages():
         for fl in files:
             flnm_lower=fl.lower()
             if ".jpg" in flnm_lower or ".png" in flnm_lower or ".jpeg" in flnm_lower or ".gif" in flnm_lower:
+                fl=os.path.abspath(os.path.join(root,fl))
                 imgsGifs.append(fl)
     return imgsGifs
 
